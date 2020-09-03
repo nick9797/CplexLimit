@@ -1,0 +1,63 @@
+#Example 1: Holcomb
+
+Holcomb = Model(name = 'Holcomb')
+
+EightOzJars = Holcomb.integer_var(name='EightOzJars') 
+FourOzJars = Holcomb.integer_var(name='FourOzJars')
+SixInchPillars = Holcomb.integer_var(name='SixInchPillars') 
+ThreeInchPillars = Holcomb.integer_var(name='ThreeInchPillars')
+VotivePack = Holcomb.integer_var(name='VotivePack') 
+
+Wax = Holcomb.add_constraint(.5*EightOzJars + .25*FourOzJars + .5*SixInchPillars + .25*ThreeInchPillars + .3125*VotivePack <=200000)
+Fragrance = Holcomb.add_constraint(.24*EightOzJars + .12*FourOzJars + .24*SixInchPillars + .12*ThreeInchPillars + .15*VotivePack <=100000)
+Wick = Holcomb.add_constraint(.43*EightOzJars + .22*FourOzJars + .58*SixInchPillars + .33*ThreeInchPillars + .8*VotivePack <=250000)
+DisplaySpace = Holcomb.add_constraint(.48*EightOzJars + .24*FourOzJars + .23*SixInchPillars + .23*ThreeInchPillars + .26*VotivePack <=124000)
+
+EightOzJarsSpace = Holcomb.add_constraint((.48*EightOzJars)/15500>=2)
+SixInchPillarsSpace = Holcomb.add_constraint((.23*SixInchPillars)/15500>=2)
+VotivePackSpace = Holcomb.add_constraint((.26*VotivePack)/15500>=1)
+EqualOrMoreJars = Holcomb.add_constraint((EightOzJars+FourOzJars) >= (SixInchPillars+ThreeInchPillars))
+
+Holcomb.maximize((.76-.52)*EightOzJars + (.44-.25)*FourOzJars + (.74-.51)*SixInchPillars + (.42-.21)*ThreeInchPillars + (.72-.55)*VotivePack)
+
+Holcomb.solve()
+
+Holcomb.print_solution()
+
+#Example 2: Plane Engines
+
+PlaneEngines = Model('PlaneEngines')
+
+Shanghai1 = PlaneEngines.continuous_var(name = 'Shanghai1')
+Shanghai2 = PlaneEngines.continuous_var(name = 'Shanghai2')
+Warsaw1 = PlaneEngines.continuous_var(name = 'Warsaw1')
+Warsaw2 = PlaneEngines.continuous_var(name = 'Warsaw2')
+Rio1 = PlaneEngines.continuous_var(name = 'Rio1')
+Rio2 = PlaneEngines.continuous_var(name = 'Rio2')
+
+Seattle1 = PlaneEngines.continuous_var(name = 'Seattle1')
+Seattle2 = PlaneEngines.continuous_var(name = 'Seattle2')
+Ontario1 = PlaneEngines.continuous_var(name = 'Ontario1')
+Ontario2 = PlaneEngines.continuous_var(name = 'Ontario2')
+Paris1 = PlaneEngines.continuous_var(name = 'Paris1')
+Paris2 = PlaneEngines.continuous_var(name = 'Paris2')
+Moscow1 = PlaneEngines.continuous_var(name = 'Moscow1')
+Moscow2 = PlaneEngines.continuous_var(name = 'Moscow2')
+
+Shanghai = PlaneEngines.add_constraint(Shanghai1 + Shanghai2 == 270)
+Warsaw = PlaneEngines.add_constraint(Warsaw1 + Warsaw2 == 350)
+Rio = PlaneEngines.add_constraint(Rio1 + Rio2 == 425)
+
+Barcelona = PlaneEngines.add_constraint(Shanghai1 + Warsaw1 + Rio1 <= 450)
+MexicoCity = PlaneEngines.add_constraint(Shanghai2 + Warsaw2 + Rio2 <= 650)
+
+Seattle3 = PlaneEngines.add_constraint(Seattle1 + Seattle2 <= 280)
+Ontario3 = PlaneEngines.add_constraint(Ontario1 + Ontario2 <= 250)
+Paris3 = PlaneEngines.add_constraint(Paris1 + Paris2 <= 320)
+Moscow3 = PlaneEngines.add_constraint(Moscow1 + Moscow2 <= 220)
+
+PlaneEngines.minimize(6105.15*Shanghai1 + 8020.31*Shanghai2 + 1160.19*Warsaw1 + 6327.51*Warsaw2 + 5307.71*Rio1 + 4772.50*Rio2 + 5414.74*Seattle1 + 2341.38*Seattle2 + 4046.40*Ontario1 + 2232.37*Ontario2 + 516.46*Paris1 + 5714.25*Paris2 + 1870.05*Moscow1 + 6661.01*Moscow2)
+
+PlaneEngines.solve()
+
+PlaneEngines.print_solution()
